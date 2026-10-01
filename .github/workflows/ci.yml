@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Restore
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore -c Release
+      - name: Testes com cobertura
+        run: dotnet test --no-build -c Release --collect:"XPlat Code Coverage" --results-directory TestResults
+      - name: Pacotes vulneráveis
+        run: dotnet list package --vulnerable --include-transitive
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cobertura
+          path: TestResults/**/coverage.cobertura.xml
