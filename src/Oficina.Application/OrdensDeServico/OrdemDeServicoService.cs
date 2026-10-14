@@ -54,6 +54,23 @@ public sealed class OrdemDeServicoService(
     public async Task<OrdemDeServicoResponse> ObterAsync(Guid id, CancellationToken ct = default) =>
         await MontarAsync(await Carregar(id, ct), ct);
 
+    /// <summary>Sem status, lista só as OS em andamento, priorizadas (EmExecucao > AguardandoAprovacao > ...).</summary>
+    public async Task<IReadOnlyList<OrdemDeServicoResumoResponse>> ListarAsync(ListarOrdensDeServicoRequest request,
+        CancellationToken ct = default)
+    {
+        var (pagina, tamanho) = Paginacao.Normalizar(request.Pagina, request.TamanhoPagina);
+        var filtro = new FiltroOrdensDeServico(
+            request.Status,
+            string.IsNullOrWhiteSpace(request.Documento) ? null : Documento.Criar(request.Documento),
+            string.IsNullOrWhiteSpace(request.Placa) ? null : Placa.Criar(request.Placa),
+            request.De,
+            request.Ate,
+            pagina,
+            tamanho);
+
+        return (await ordens.ListarAsync(filtro, ct)).Select(OrdemDeServicoResumoResponse.De).ToList();
+    }
+
     public async Task<IReadOnlyList<OrdemDeServicoResumoResponse>> ListarDoClienteAsync(Guid clienteId,
         CancellationToken ct = default) =>
         (await ordens.ListarPorClienteAsync(clienteId, ct)).Select(OrdemDeServicoResumoResponse.De).ToList();

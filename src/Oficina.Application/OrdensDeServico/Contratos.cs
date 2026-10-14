@@ -10,6 +10,15 @@ public sealed record VeiculoDaOrdemRequest(string Placa, string? Marca, string? 
 public sealed record AbrirOrdemDeServicoRequest(string DocumentoCliente, VeiculoDaOrdemRequest Veiculo,
     string DescricaoProblema);
 
+public sealed record ListarOrdensDeServicoRequest(
+    StatusOS? Status = null,
+    string? Documento = null,
+    string? Placa = null,
+    DateTimeOffset? De = null,
+    DateTimeOffset? Ate = null,
+    int? Pagina = null,
+    int? TamanhoPagina = null);
+
 public sealed record AdicionarServicoRequest(Guid ServicoId);
 
 public sealed record AdicionarPecaRequest(Guid PecaId, int Quantidade);

@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Oficina.Api.Configuracao;
 using Oficina.Application.OrdensDeServico;
+using Oficina.Application.Relatorios;
 
 namespace Oficina.Api.Endpoints;
 
@@ -20,6 +21,11 @@ public static class OrdemDeServicoEndpoints
             var os = await s.AbrirAsync(request, u.UsuarioId(), ct);
             return TypedResults.Created($"/api/v1/ordens-servico/{os.Id}", os);
         }).RequireAuthorization(Politicas.Atendimento);
+
+        grupo.MapGet("/", ([AsParameters] ListarOrdensDeServicoRequest request, OrdemDeServicoService s,
+                CancellationToken ct) => s.ListarAsync(request, ct))
+            .WithSummary("Lista OS priorizadas: EmExecucao > AguardandoAprovacao > EmDiagnostico > Recebida, " +
+                         "mais antigas primeiro. Finalizada/Entregue só com filtro de status.");
 
         grupo.MapGet("/{id:guid}", (Guid id, OrdemDeServicoService s, CancellationToken ct) => s.ObterAsync(id, ct));
 
@@ -57,5 +63,14 @@ public static class OrdemDeServicoEndpoints
         grupo.MapPost("/{id:guid}/entrega", (Guid id, OrdemDeServicoService s, ClaimsPrincipal u,
             CancellationToken ct) => s.RegistrarEntregaAsync(id, u.UsuarioId(), ct))
             .RequireAuthorization(Politicas.Atendimento);
+    }
+
+    public static void MapRelatorios(this IEndpointRouteBuilder api)
+    {
+        api.MapGroup("/relatorios").WithTags("Relatórios")
+            .RequireAuthorization(Politicas.Administrador)
+            .MapGet("/tempo-medio-execucao", (DateTimeOffset? de, DateTimeOffset? ate, Guid? servicoId,
+                RelatorioService s, CancellationToken ct) => s.TempoMedioExecucaoAsync(de, ate, servicoId, ct))
+            .WithSummary("Tempo médio, mínimo e máximo de execução (em minutos) das OS finalizadas no período");
     }
 }

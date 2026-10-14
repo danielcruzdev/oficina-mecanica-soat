@@ -8,6 +8,7 @@ using Oficina.Application.Clientes;
 using Oficina.Application.Estoque;
 using Oficina.Application.Identidade;
 using Oficina.Application.OrdensDeServico;
+using Oficina.Application.Relatorios;
 using Oficina.Application.Veiculos;
 using Oficina.Infrastructure;
 using Oficina.Infrastructure.Persistencia;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<VeiculoService>();
 builder.Services.AddScoped<ServicoService>();
 builder.Services.AddScoped<PecaService>();
 builder.Services.AddScoped<OrdemDeServicoService>();
+builder.Services.AddScoped<RelatorioService>();
 
 builder.Services.ConfigureHttpJsonOptions(o => o.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddProblemDetails();
@@ -56,6 +58,7 @@ api.MapServicos();
 api.MapPecas();
 api.MapOrdensDeServico();
 api.MapAreaDoCliente();
+api.MapRelatorios();
 
 app.Run();
 
