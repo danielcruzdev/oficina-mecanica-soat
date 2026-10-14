@@ -54,6 +54,14 @@ public sealed class OrdemDeServicoService(
     public async Task<OrdemDeServicoResponse> ObterAsync(Guid id, CancellationToken ct = default) =>
         await MontarAsync(await Carregar(id, ct), ct);
 
+    public async Task<IReadOnlyList<OrdemDeServicoResumoResponse>> ListarDoClienteAsync(Guid clienteId,
+        CancellationToken ct = default) =>
+        (await ordens.ListarPorClienteAsync(clienteId, ct)).Select(OrdemDeServicoResumoResponse.De).ToList();
+
+    public async Task<OrdemDeServicoResponse> ObterDoClienteAsync(Guid id, Guid clienteId,
+        CancellationToken ct = default) =>
+        await MontarAsync(await CarregarDoCliente(id, clienteId, ct), ct);
+
     public async Task<OrdemDeServicoResponse> IniciarDiagnosticoAsync(Guid id, Guid usuarioId,
         CancellationToken ct = default)
     {

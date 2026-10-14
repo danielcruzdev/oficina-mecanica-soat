@@ -258,6 +258,17 @@ public class OrdemDeServicoServiceTests
     }
 
     [Fact]
+    public async Task Cliente_consulta_somente_as_proprias_os()
+    {
+        var os = NovaOs();
+        _ordens.ListarPorClienteAsync(_cliente.Id, Arg.Any<CancellationToken>()).Returns([os]);
+
+        Assert.Single(await _service.ListarDoClienteAsync(_cliente.Id));
+        Assert.Equal(os.Id, (await _service.ObterDoClienteAsync(os.Id, _cliente.Id)).Id);
+        await Assert.ThrowsAsync<NaoEncontradoException>(() => _service.ObterDoClienteAsync(os.Id, Guid.NewGuid()));
+    }
+
+    [Fact]
     public async Task Os_inexistente_lanca_nao_encontrado()
     {
         await Assert.ThrowsAsync<NaoEncontradoException>(() => _service.ObterAsync(Guid.NewGuid()));

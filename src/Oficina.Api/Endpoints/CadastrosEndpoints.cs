@@ -1,3 +1,4 @@
+using Oficina.Api.Configuracao;
 using Oficina.Application.Clientes;
 using Oficina.Application.Veiculos;
 
@@ -7,7 +8,8 @@ public static class CadastrosEndpoints
 {
     public static void MapClientes(this IEndpointRouteBuilder api)
     {
-        var grupo = api.MapGroup("/clientes").WithTags("Clientes");
+        var grupo = api.MapGroup("/clientes").WithTags("Clientes")
+            .RequireAuthorization(Politicas.Atendimento);
 
         grupo.MapGet("/", (ClienteService s, int? pagina, int? tamanhoPagina, CancellationToken ct) =>
             s.ListarAsync(pagina, tamanhoPagina, ct));
@@ -35,7 +37,8 @@ public static class CadastrosEndpoints
 
     public static void MapVeiculos(this IEndpointRouteBuilder api)
     {
-        var grupo = api.MapGroup("/veiculos").WithTags("Veículos");
+        var grupo = api.MapGroup("/veiculos").WithTags("Veículos")
+            .RequireAuthorization(Politicas.Atendimento);
 
         grupo.MapGet("/", (VeiculoService s, Guid? clienteId, int? pagina, int? tamanhoPagina, CancellationToken ct) =>
             s.ListarAsync(clienteId, pagina, tamanhoPagina, ct));

@@ -33,6 +33,8 @@ public static class DependencyInjection
 
         services.AddSingleton(TimeProvider.System);
         services.AddSingleton<ISenhaHasher, SenhaHasher>();
+        services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.Secao));
+        services.AddSingleton<ITokenService, JwtTokenService>();
 
         return services;
     }
