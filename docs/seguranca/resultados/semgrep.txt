@@ -1,0 +1,7 @@
+Semgrep 1.180.0 · configs: p/csharp, p/owasp-top-ten, p/secrets, p/dockerfile · data: 2026-10-18
+
+ • Findings: 0 (0 blocking)
+ • Rules run: 101
+ • Targets scanned: 99
+Ran 101 rules on 99 files: 0 findings.
+
