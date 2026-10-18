@@ -174,7 +174,8 @@ oficina-mecanica-soat/
 
 ## Documentação DDD
 
-- Event Storming (Miro): _link a preencher_
+- Event Storming (Miro): [https://miro.com/app/board/uXjVEbecZK4=/?share_link_id=246853268170](https://miro.com/app/board/uXjVEbecZK4=/?share_link_id=246853268170)
+- Exportações do board: [`event-storming.pdf`](docs/ddd/event-storming.pdf) (fluxos de criação e acompanhamento da OS e gestão de peças e insumos) · [`diagramas.pdf`](docs/ddd/diagramas.pdf) (máquina de estados, mapa de contextos, agregados e linguagem ubíqua)
 - Exportação e modelo de domínio: [`docs/ddd/`](docs/ddd/), incluindo [linguagem ubíqua, bounded contexts, agregados, eventos e matriz documentação ↔ código](docs/ddd/linguagem-ubiqua.md)
 
 ## Vídeo da entrega
