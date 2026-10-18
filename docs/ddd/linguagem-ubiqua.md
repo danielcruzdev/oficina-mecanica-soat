@@ -19,12 +19,14 @@ flowchart LR
     CAT[Catálogo de Serviços<br/>Supporting]
     EST[Estoque<br/>Supporting]
     OS[Atendimento / OS<br/>CORE]
-    CV -- "ClienteId, VeiculoId" --> OS
-    CAT -- "nome + preço (snapshot)" --> OS
-    EST -- "nome + preço (snapshot) + disponibilidade" --> OS
-    OS -- "baixa ao aprovar" --> EST
-    ID -- "usuário autenticado (sub, cliente_id)" --> OS
+    CV -- "Customer Supplier / ClienteId, VeiculoId" --> OS
+    CAT -- "Customer Supplier / nome + preço (snapshot)" --> OS
+    EST -- "Customer Supplier / nome + preço (snapshot) + disponibilidade" --> OS
+    OS -- "chamada interna / baixa ao aprovar" --> EST
+    ID -- "Conformist / claims do JWT (sub, role, cliente_id)" --> OS
 ```
+
+Relações (mapa de contexto): **Customer Supplier**: Clientes e Veículos, Catálogo e Estoque são upstream e fornecem dados ao Atendimento (downstream), que guarda só IDs e snapshots. **Conformist**: o Atendimento usa as claims do JWT emitidas por Identidade e Acesso como estão. A baixa de estoque é uma chamada interna no mesmo caso de uso (mesma transação).
 
 A OS referencia outros agregados **por Id** e guarda **snapshot de preço**: o preço do catálogo pode mudar depois, mas o orçamento já apresentado não muda.
 
@@ -125,3 +127,8 @@ Coletados no agregado (`AggregateRoot.Eventos`) e registrados no log pelo `Ofici
 | Unit of Work + despacho de eventos | `src/Oficina.Infrastructure/Persistencia/OficinaDbContext.cs` |
 | Concorrência otimista (xmin) | `src/Oficina.Infrastructure/Persistencia/Configuracoes/PecaConfiguracao.cs` |
 | Endpoints da OS e da área do cliente | `src/Oficina.Api/Endpoints/OrdemDeServicoEndpoints.cs`, `AcessoEndpoints.cs` |
+
+## 7. Board do Event Storming
+
+- Miro (acesso público): https://miro.com/app/board/uXjVEbecZK4=/?share_link_id=246853268170
+- Exportações: [`event-storming.pdf`](event-storming.pdf) (frames 00 a 03: legenda e os 3 fluxos) · [`diagramas.pdf`](diagramas.pdf) (frames 04 a 07: máquina de estados, mapa de contextos, agregados e linguagem ubíqua)
