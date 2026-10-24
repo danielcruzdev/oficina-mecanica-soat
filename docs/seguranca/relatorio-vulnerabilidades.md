@@ -3,7 +3,7 @@
 | Campo | Valor |
 |---|---|
 | Data da análise | 18/10/2026 |
-| Versão analisada | branch `main`, commit `66b955e` (+ correção do CI deste relatório) |
+| Versão analisada | branch `main`, commit `66b955e` (+ correção do CI deste relatório). Vale também para a tag `v1.0.0-fase1`: depois dessa análise só mudou documentação, sem alteração de código, dependências ou imagem |
 | Escopo | Dependências NuGet (SCA), imagem Docker da API, repositório (segredos e configuração), código-fonte (SAST) |
 | Saídas completas das ferramentas | [`resultados/`](resultados/) |
 
