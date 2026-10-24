@@ -74,7 +74,7 @@ SQL Server (imagem pesada, licença) e MongoDB (estoque compartilhado pede rela�
 ## Execução
 
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/danielcruzdev/oficina-mecanica-soat.git
 cd oficina-mecanica-soat
 cp .env.example .env        # ajuste a senha do banco e a chave JWT
 docker compose up -d --build
@@ -180,4 +180,4 @@ oficina-mecanica-soat/
 
 ## Vídeo da entrega
 
-- YouTube: _link a preencher_
+- YouTube: [https://www.youtube.com/watch?v=zyQWVv1uUpM](https://www.youtube.com/watch?v=zyQWVv1uUpM)
